@@ -2,7 +2,9 @@ from fastapi import FastAPI, UploadFile, File
 from src.utils import model
 from src.config.chromadb_config import collection
 import uuid
+import os
 
+USE_MOCK_LLM = os.getenv("USE_MOCK_LLM", "0").lower() == "1"
 # Initialize FastAPI app
 app = FastAPI()
 
@@ -17,6 +19,10 @@ def query(question: str) -> dict:
     # Extract the first document from the results
     context = results['documents'][0][0] if results['documents'][0] else "No relevant document found."
 
+    if USE_MOCK_LLM:
+        # Return a mock answer for testing purposes
+        return { "answer": f"Mock answer for question: {question} with context: {context}" }
+    
     # Generate answer using the model utility
     answer = model.generate_answer(context=context, question=question)
 
