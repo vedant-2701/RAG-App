@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rag-configmap
+  namespace: rag-space
+data:
+  OLLAMA_HOST: "http://host.docker.internal:11434"

@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rag-app-deployment
+  namespace: rag-space
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rag-api
+  template:
+    metadata:
+      labels:
+        app: rag-api
+    spec:
+      containers:
+      - name: rag-api-container
+        image: vedant2705/rag-app:latest
+        ports:
+        - containerPort: 8000
+        envFrom:
+        - configMapRef:
+            name: rag-configmap
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rag-app-service
+  namespace: rag-space
+spec:
+  type: NodePort
+  selector:
+    app: rag-api
+  ports:
+  - port: 8000
+    targetPort: 8000
+    protocol: TCP
+
