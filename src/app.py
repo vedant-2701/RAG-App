@@ -20,6 +20,7 @@ def query(question: str) -> dict:
     context = results['documents'][0][0] if results['documents'][0] else "No relevant document found."
 
     if USE_MOCK_LLM:
+        print("Using mock LLM for response.")
         # Return a mock answer for testing purposes
         return { "answer": f"Mock answer for question: {question} with context: {context}" }
     
